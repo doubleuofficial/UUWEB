@@ -12,6 +12,12 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ff6b00">
     
+    <!-- Vercel Web Analytics -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -50,14 +56,95 @@
                 <div class="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
                     <div class="relative group">
                         <div class="absolute -inset-2 bg-orange-500/10 rounded-[4rem] blur-xl group-hover:bg-orange-500/20 transition duration-1000"></div>
-                        <img src="/assets/album/dear-author/cover-art/wondering-if-we-won.webp" alt="DoubleU - Wondering If We Won" class="relative rounded-[3.5rem] w-full aspect-square object-cover shadow-2xl border border-white/10">
+                        <img src="/assets/album/dear-author/dear-author.webp" alt="DoubleU - Wondering If We Won" class="relative rounded-[3.5rem] w-full aspect-square object-cover shadow-2xl border border-white/10">
                     </div>
 
                     <div class="flex flex-col">
                         <span class="neon-text text-[10px] font-black tracking-[0.8em] uppercase mb-6 block">Album Track</span>
                         <h1 class="brand-font text-5xl md:text-7xl italic uppercase mb-4 tracking-tighter leading-none">Wondering If We Won</h1>
-                        <p class="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em] mb-12">Released: 2026-04-27</p>
+                        <p class="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em] mb-8">Released: 2026-04-27</p>
                         
+                        
+                        <div class="glass p-6 rounded-3xl mb-8 flex flex-col gap-2 border border-white/5 shadow-inner">
+                            <audio id="audio-wondering-if-we-won" src="/assets/album/dear-author/audio/wondering-if-we-won.wav" preload="metadata"></audio>
+                            <div class="flex items-center gap-5">
+                                <button id="play-btn-wondering-if-we-won" class="w-12 h-12 min-w-[3rem] rounded-2xl bg-[#ff6b00] text-black flex items-center justify-center transition duration-300 hover:bg-orange-500 active:scale-95 shadow-lg shadow-orange-500/20">
+                                    <i id="play-icon-wondering-if-we-won" class="fa-solid fa-play translate-x-[1px] text-lg"></i>
+                                </button>
+                                <div class="flex-1 flex flex-col justify-center">
+                                    <div class="flex items-center justify-between text-[10px] uppercase font-black tracking-widest text-zinc-500 mb-1.5">
+                                        <span id="time-current-wondering-if-we-won">0:00</span>
+                                        <span id="time-total-wondering-if-we-won">0:00</span>
+                                    </div>
+                                    <div class="relative w-full flex items-center">
+                                        <input id="progress-bar-wondering-if-we-won" type="range" min="0" max="100" value="0" class="w-full h-1 bg-zinc-800 accent-[#ff6b00] rounded-lg appearance-none cursor-pointer outline-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            (function() {
+                                const audio = document.getElementById('audio-wondering-if-we-won');
+                                const playBtn = document.getElementById('play-btn-wondering-if-we-won');
+                                const playIcon = document.getElementById('play-icon-wondering-if-we-won');
+                                const progressBar = document.getElementById('progress-bar-wondering-if-we-won');
+                                const timeCurrent = document.getElementById('time-current-wondering-if-we-won');
+                                const timeTotal = document.getElementById('time-total-wondering-if-we-won');
+
+                                function formatTime(secs) {
+                                    if (isNaN(secs)) return "0:00";
+                                    const mins = Math.floor(secs / 60);
+                                    const remainingSecs = Math.floor(secs % 60);
+                                    return `${mins}:${remainingSecs < 10 ? '0' : ''}${remainingSecs}`;
+                                }
+
+                                playBtn.onclick = () => {
+                                    if (audio.paused) {
+                                        audio.play();
+                                        playIcon.className = "fa-solid fa-pause text-lg";
+                                    } else {
+                                        audio.pause();
+                                        playIcon.className = "fa-solid fa-play translate-x-[1px] text-lg";
+                                    }
+                                };
+
+                                audio.onloadedmetadata = () => {
+                                    timeTotal.textContent = formatTime(audio.duration);
+                                    progressBar.max = Math.floor(audio.duration);
+                                };
+
+                                audio.ontimeupdate = () => {
+                                    if (!progressBar.classList.contains('seeking')) {
+                                        progressBar.value = Math.floor(audio.currentTime);
+                                    }
+                                    timeCurrent.textContent = formatTime(audio.currentTime);
+                                };
+
+                                progressBar.oninput = () => {
+                                    progressBar.classList.add('seeking');
+                                    timeCurrent.textContent = formatTime(progressBar.value);
+                                };
+
+                                progressBar.onchange = () => {
+                                    audio.currentTime = progressBar.value;
+                                    progressBar.classList.remove('seeking');
+                                };
+
+                                audio.onended = () => {
+                                    playIcon.className = "fa-solid fa-play translate-x-[1px] text-lg";
+                                    progressBar.value = 0;
+                                    timeCurrent.textContent = "0:00";
+                                };
+                                
+                                // Fallback if metadata loads before listener attaches
+                                if (audio.readyState >= 1) {
+                                    timeTotal.textContent = formatTime(audio.duration);
+                                    progressBar.max = Math.floor(audio.duration);
+                                }
+                            })();
+                        </script>
+                        
+
                         <div class="space-y-4">
                             
                             <a href="https://open.spotify.com/album/4nV9MYZCM5ym8ckHq4Gvdf?si=gJwPlh3TQUqiNIhIw3ZasA" target="_blank" class="glass spotify-btn p-6 rounded-3xl flex items-center justify-between group transition duration-300">

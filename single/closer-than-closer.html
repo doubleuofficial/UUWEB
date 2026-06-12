@@ -12,6 +12,12 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ff6b00">
     
+    <!-- Vercel Web Analytics -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -56,8 +62,89 @@
                     <div class="flex flex-col">
                         <span class="neon-text text-[10px] font-black tracking-[0.8em] uppercase mb-6 block">Single</span>
                         <h1 class="brand-font text-5xl md:text-7xl italic uppercase mb-4 tracking-tighter leading-none">Closer Than Closer</h1>
-                        <p class="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em] mb-12">Released: 2023-02-10</p>
+                        <p class="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em] mb-8">Released: 2023-02-10</p>
                         
+                        
+                        <div class="glass p-6 rounded-3xl mb-8 flex flex-col gap-2 border border-white/5 shadow-inner">
+                            <audio id="audio-closer-than-closer" src="/assets/single/audio/closer-than-closer.wav" preload="metadata"></audio>
+                            <div class="flex items-center gap-5">
+                                <button id="play-btn-closer-than-closer" class="w-12 h-12 min-w-[3rem] rounded-2xl bg-[#ff6b00] text-black flex items-center justify-center transition duration-300 hover:bg-orange-500 active:scale-95 shadow-lg shadow-orange-500/20">
+                                    <i id="play-icon-closer-than-closer" class="fa-solid fa-play translate-x-[1px] text-lg"></i>
+                                </button>
+                                <div class="flex-1 flex flex-col justify-center">
+                                    <div class="flex items-center justify-between text-[10px] uppercase font-black tracking-widest text-zinc-500 mb-1.5">
+                                        <span id="time-current-closer-than-closer">0:00</span>
+                                        <span id="time-total-closer-than-closer">0:00</span>
+                                    </div>
+                                    <div class="relative w-full flex items-center">
+                                        <input id="progress-bar-closer-than-closer" type="range" min="0" max="100" value="0" class="w-full h-1 bg-zinc-800 accent-[#ff6b00] rounded-lg appearance-none cursor-pointer outline-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            (function() {
+                                const audio = document.getElementById('audio-closer-than-closer');
+                                const playBtn = document.getElementById('play-btn-closer-than-closer');
+                                const playIcon = document.getElementById('play-icon-closer-than-closer');
+                                const progressBar = document.getElementById('progress-bar-closer-than-closer');
+                                const timeCurrent = document.getElementById('time-current-closer-than-closer');
+                                const timeTotal = document.getElementById('time-total-closer-than-closer');
+
+                                function formatTime(secs) {
+                                    if (isNaN(secs)) return "0:00";
+                                    const mins = Math.floor(secs / 60);
+                                    const remainingSecs = Math.floor(secs % 60);
+                                    return `${mins}:${remainingSecs < 10 ? '0' : ''}${remainingSecs}`;
+                                }
+
+                                playBtn.onclick = () => {
+                                    if (audio.paused) {
+                                        audio.play();
+                                        playIcon.className = "fa-solid fa-pause text-lg";
+                                    } else {
+                                        audio.pause();
+                                        playIcon.className = "fa-solid fa-play translate-x-[1px] text-lg";
+                                    }
+                                };
+
+                                audio.onloadedmetadata = () => {
+                                    timeTotal.textContent = formatTime(audio.duration);
+                                    progressBar.max = Math.floor(audio.duration);
+                                };
+
+                                audio.ontimeupdate = () => {
+                                    if (!progressBar.classList.contains('seeking')) {
+                                        progressBar.value = Math.floor(audio.currentTime);
+                                    }
+                                    timeCurrent.textContent = formatTime(audio.currentTime);
+                                };
+
+                                progressBar.oninput = () => {
+                                    progressBar.classList.add('seeking');
+                                    timeCurrent.textContent = formatTime(progressBar.value);
+                                };
+
+                                progressBar.onchange = () => {
+                                    audio.currentTime = progressBar.value;
+                                    progressBar.classList.remove('seeking');
+                                };
+
+                                audio.onended = () => {
+                                    playIcon.className = "fa-solid fa-play translate-x-[1px] text-lg";
+                                    progressBar.value = 0;
+                                    timeCurrent.textContent = "0:00";
+                                };
+                                
+                                // Fallback if metadata loads before listener attaches
+                                if (audio.readyState >= 1) {
+                                    timeTotal.textContent = formatTime(audio.duration);
+                                    progressBar.max = Math.floor(audio.duration);
+                                }
+                            })();
+                        </script>
+                        
+
                         <div class="space-y-4">
                             
                             <a href="https://open.spotify.com/track/3bzNzh5rzBVdKiJqGnJLqn?si=2da549143fa2416b" target="_blank" class="glass spotify-btn p-6 rounded-3xl flex items-center justify-between group transition duration-300">

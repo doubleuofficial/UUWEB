@@ -12,6 +12,12 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ff6b00">
     
+    <!-- Vercel Web Analytics -->
+    <script>
+      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
@@ -50,14 +56,16 @@
                 <div class="grid md:grid-cols-2 gap-16 lg:gap-24 items-center">
                     <div class="relative group">
                         <div class="absolute -inset-2 bg-orange-500/10 rounded-[4rem] blur-xl group-hover:bg-orange-500/20 transition duration-1000"></div>
-                        <img src="/assets/album/dear-author/cover-art/dear-author.webp" alt="DoubleU - Dear Author" class="relative rounded-[3.5rem] w-full aspect-square object-cover shadow-2xl border border-white/10">
+                        <img src="/assets/album/dear-author/dear-author.webp" alt="DoubleU - Dear Author" class="relative rounded-[3.5rem] w-full aspect-square object-cover shadow-2xl border border-white/10">
                     </div>
 
                     <div class="flex flex-col">
                         <span class="neon-text text-[10px] font-black tracking-[0.8em] uppercase mb-6 block">Album</span>
                         <h1 class="brand-font text-5xl md:text-7xl italic uppercase mb-4 tracking-tighter leading-none">Dear Author</h1>
-                        <p class="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em] mb-12">Released: 2026-04-27</p>
+                        <p class="text-zinc-600 text-[10px] font-black uppercase tracking-[0.4em] mb-8">Released: 2026-04-27</p>
                         
+                        
+
                         <div class="space-y-4">
                             
                             <a href="https://open.spotify.com/album/4nV9MYZCM5ym8ckHq4Gvdf?si=gJwPlh3TQUqiNIhIw3ZasA" target="_blank" class="glass spotify-btn p-6 rounded-3xl flex items-center justify-between group transition duration-300">

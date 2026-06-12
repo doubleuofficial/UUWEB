@@ -6,6 +6,7 @@
     "build": "node generate_site.js"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "http": "^0.0.1-security",
     "http-server": "^14.1.1"
   }
