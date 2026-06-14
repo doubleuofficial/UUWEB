@@ -1,4 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
 
-Sitemap: https://www.doubleuofficial.online/sitemap.xml
+# Sitemaps
+Sitemap: https://doubleuofficial.online/sitemap.xml
+
