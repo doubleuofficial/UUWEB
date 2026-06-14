@@ -1,7 +1,7 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
+Allow: /assets/
+Allow: /assets/images/
 
-# Sitemaps
 Sitemap: https://doubleuofficial.online/sitemap.xml
 

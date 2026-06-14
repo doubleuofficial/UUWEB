@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Booking | DoubleU Official Hub</title>
+    <meta name="description" content="Reach out to the official DoubleU studio team for bookings, press features, and independent distribution inquires. Based out of Oklahoma City.">
+    <link rel="canonical" href="https://doubleuofficial.online/contact.html">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --cyan: #00F0FF; --orange: #FF5F00; --dark-bg: #050B14; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--dark-bg); color: #E2E8F0; }
+        .heading-font { font-family: 'Orbitron', sans-serif; }
+    </style>
+</head>
+<body class="pt-24 min-h-screen flex flex-col justify-between">
+
+    <!-- NAV BAR -->
+    <nav class="fixed top-0 w-full z-50 bg-[#050B14]/80 backdrop-blur-md border-b border-slate-800/60">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="/" class="heading-font text-2xl font-black tracking-widest text-[#00F0FF]">
+                DOUBLE<span class="text-[#FF5F00]">U</span>
+            </a>
+            <div class="flex space-x-8 text-sm font-semibold tracking-wider uppercase">
+                <a href="/" class="hover:text-[#00F0FF] transition">Vault Home</a>
+                <a href="/about.html" class="hover:text-[#00F0FF] transition">The Journey</a>
+                <a href="/contact.html" class="text-[#00F0FF]">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="max-w-4xl mx-auto px-6 py-12 flex-grow w-full">
+        <header class="border-b border-slate-900 pb-6 mb-12">
+            <span class="heading-font text-xs uppercase tracking-widest text-[#00F0FF] font-bold">Studio Dispatch Console</span>
+            <h1 class="heading-font text-4xl font-black tracking-tight text-white uppercase mt-2">CONNECT WITH THE STUDIO</h1>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+            <!-- Left Info Block -->
+            <div class="md:col-span-5 space-y-6 font-mono text-xs text-slate-400">
+                <div class="p-4 bg-slate-950 border border-slate-900 rounded-lg">
+                    <p class="text-slate-600 uppercase font-bold tracking-wider">OPERATIONAL BASE</p>
+                    <p class="text-white mt-1 text-sm font-sans font-medium">Oklahoma City, Oklahoma</p>
+                    <p class="text-slate-600 mt-0.5">405 Region Archive</p>
+                </div>
+                <div class="p-4 bg-slate-950 border border-slate-900 rounded-lg">
+                    <p class="text-slate-600 uppercase font-bold tracking-wider">MEDIA & PRESS INQUIRIES</p>
+                    <p class="text-[#00F0FF] mt-1 text-sm font-sans break-all font-medium">management@doubleuofficial.online</p>
+                </div>
+                <div class="p-4 bg-slate-950 border border-slate-900 rounded-lg">
+                    <p class="text-slate-600 uppercase font-bold tracking-wider">CREATIVE MOVEMENT</p>
+                    <p class="text-[#FF5F00] mt-1 text-sm font-sans font-medium">No Stories Left Behind Records</p>
+                </div>
+            </div>
+
+            <!-- Right Form Block -->
+            <div class="md:col-span-7">
+                <form class="space-y-4" onsubmit="event.preventDefault(); alert('Transmission securely logged.');">
+                    <div>
+                        <label class="block font-mono text-[10px] text-slate-500 uppercase tracking-widest mb-1">Your Name / Organization</label>
+                        <input type="text" required class="w-full bg-slate-950 border border-slate-800 rounded px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-[#00F0FF] transition">
+                    </div>
+                    <div>
+                        <label class="block font-mono text-[10px] text-slate-500 uppercase tracking-widest mb-1">Email Address</label>
+                        <input type="email" required class="w-full bg-slate-950 border border-slate-800 rounded px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-[#00F0FF] transition">
+                    </div>
+                    <div>
+                        <label class="block font-mono text-[10px] text-slate-500 uppercase tracking-widest mb-1">Inquiry Context</label>
+                        <select class="w-full bg-slate-950 border border-slate-800 rounded px-4 py-3 text-sm text-slate-400 focus:outline-none focus:border-[#00F0FF] transition">
+                            <option>Booking / Live Presentation</option>
+                            <option>Press / Interview Request</option>
+                            <option>Distribution / Licensing</option>
+                            <option>General Correspondence</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-mono text-[10px] text-slate-500 uppercase tracking-widest mb-1">Secure Message Transmission</label>
+                        <textarea rows="5" required class="w-full bg-slate-950 border border-slate-800 rounded px-4 py-3 text-sm text-slate-200 focus:outline-none focus:border-[#00F0FF] transition whitespace-pre-line"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-[#00F0FF] to-[#FF5F00] text-black font-mono text-xs font-bold py-4 rounded uppercase tracking-widest transition duration-300">
+                        Transmit Message To Vault
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#01040A] border-t border-slate-900/60 py-8 text-center text-slate-600 font-mono text-xs">
+        <p>&copy; 2026 DoubleU. Secure Dispatch Protocol.</p>
+    </footer>
+
+</body>
+</html>
+
