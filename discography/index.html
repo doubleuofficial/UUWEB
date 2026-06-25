@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nights On The Fault | DoubleU</title>
+  <!-- Tailwind CSS CDN for Styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons for Media Controls -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Custom track styling to align accent colors perfectly across browsers */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #f97316; /* Orange 500 */
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #f97316;
+      border: none;
+      cursor: pointer;
+    }
+    .volume-slider::-webkit-slider-thumb {
+      background: #a1a1aa !important; /* Zinc 400 */
+    }
+    .volume-slider::-moz-range-thumb {
+      background: #a1a1aa !important;
+    }
+  </style>
+</head>
+<body class="bg-black text-zinc-100 min-h-screen flex items-center justify-center p-4 selection:bg-orange-500/30">
+
+  <!-- Main Player Card Container -->
+  <div class="w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-xl p-6 shadow-2xl backdrop-blur-md">
+    
+    <!-- Native Audio Element -->
+    <!-- Swap 'nights-on-the-fault.mp3' out on your other specific song pages -->
+    <audio id="audio-engine" src="/assets/audio/nights-on-the-fault.mp3" preload="metadata"></audio>
+
+    <!-- Track Header Info -->
+    <div class="mb-6 text-center">
+      <p class="text-xs tracking-widest text-zinc-500 uppercase font-medium mb-1">Now Playing</p>
+      <h1 class="text-2xl font-bold text-zinc-100 tracking-tight">Nights On The Fault</h1>
+      <p class="text-sm text-cyan-400 mt-1 font-medium">DoubleU</p>
+    </div>
+
+    <!-- Timeline Progress Bar System -->
+    <div class="space-y-2 mb-6">
+      <input
+        type="range"
+        id="progress-bar"
+        min="0"
+        max="100"
+        value="0"
+        className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-orange-500 focus:outline-none"
+        style="width: 100%; height: 4px; background: #27272a; border-radius: 8px; appearance: none; outline: none;"
+      />
+      <div class="flex justify-between text-xs text-zinc-500 font-mono">
+        <span id="current-time">0:00</span>
+        <span id="duration-time">0:00</span>
+      </div>
+    </div>
+
+    <!-- Playback Interaction Controls -->
+    <div class="flex items-center justify-center space-x-6 mb-6">
+      <!-- Play / Pause Main Trigger Button -->
+      <button
+        id="play-pause-btn"
+        class="p-4 bg-zinc-900 border border-zinc-800 rounded-full text-orange-500 hover:text-orange-400 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg shadow-orange-950/20 focus:outline-none"
+        aria-label="Play Track"
+      >
+        <i data-lucide="play" id="play-icon" class="w-7 h-7 fill-current translate-x-0.5"></i>
+      </button>
+    </div>
+
+    <!-- Volume Utility Housing -->
+    <div class="flex items-center space-x-3 bg-zinc-900/50 border border-zinc-900 px-4 py-2 rounded-lg">
+      <button 
+        id="mute-btn"
+        class="text-zinc-500 hover:text-zinc-300 transition-colors duration-200 focus:outline-none"
+        aria-label="Mute Volume"
+      >
+        <i data-lucide="volume-2" id="volume-icon" class="w-5 h-5"></i>
+      </button>
+      <input
+        type="range"
+        id="volume-slider"
+        class="volume-slider w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer focus:outline-none"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.8"
+        style="width: 100%; height: 4px; background: #27272a; border-radius: 8px; appearance: none; outline: none;"
+      />
+    </div>
+
+    <!-- Back to Catalog Anchor Link -->
+    <div class="mt-6 pt-4 border-t border-zinc-900 text-center">
+      <a href="/catalog" class="text-xs text-zinc-500 hover:text-cyan-400 font-medium tracking-wide transition-colors duration-150 uppercase">
+        &larr; Back To Releases
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Component Logic Integration Engine -->
+  <script>
+    // Elements Selector Cache
+    const audio = document.getElementById('audio-engine');
+    const playPauseBtn = document.getElementById('play-pause-btn');
+    const playIcon = document.getElementById('play-icon');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTimeLabel = document.getElementById('current-time');
+    const durationTimeLabel = document.getElementById('duration-time');
+    const muteBtn = document.getElementById('mute-btn');
+    const volumeIcon = document.getElementById('volume-icon');
+    const volumeSlider = document.getElementById('volume-slider');
+
+    let previousVolume = 0.8;
+
+    // Format raw timing metrics into digital minutes/seconds layout
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return "0:00";
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Toggle Playback Engine States
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play()
+          .then(() => updateUIState(true))
+          .catch(err => console.warn("Playback initialization blocked or prevented:", err));
+      } else {
+        audio.pause();
+        updateUIState(false);
+      }
+    }
+
+    // Direct Playback State Visual Switcher
+    function updateUIState(isPlaying) {
+      if (isPlaying) {
+        playIcon.setAttribute('data-lucide', 'pause');
+        playIcon.classList.remove('translate-x-0.5');
+        playPauseBtn.setAttribute('aria-label', 'Pause Track');
+      } else {
+        playIcon.setAttribute('data-lucide', 'play');
+        playIcon.classList.add('translate-x-0.5');
+        playPauseBtn.setAttribute('aria-label', 'Play Track');
+      }
+      lucide.createIcons(); // Force refresh iconography mapping injection
+    }
+
+    // Track Sync Updating Logic
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration) return;
+      const currentPercentage = (audio.currentTime / audio.duration) * 100;
+      progressBar.value = currentPercentage;
+      currentTimeLabel.textContent = formatTime(audio.currentTime);
+    });
+
+    // Populate Maximum Bound Constraints upon Metadata Read State
+    audio.addEventListener('loadedmetadata', () => {
+      durationTimeLabel.textContent = formatTime(audio.duration);
+    });
+
+    // User Scrub Timeline Stream Execution
+    progressBar.addEventListener('input', () => {
+      if (!audio.duration) return;
+      const targetTime = (progressBar.value / 100) * audio.duration;
+      audio.currentTime = targetTime;
+      currentTimeLabel.textContent = formatTime(targetTime);
+    });
+
+    // Volumetric Control Scrubber Processing
+    volumeSlider.addEventListener('input', (e) => {
+      const targetVol = parseFloat(e.target.value);
+      audio.volume = targetVol;
+      audio.muted = (targetVol === 0);
+      updateVolumeIcon(targetVol, audio.muted);
+    });
+
+    // Audio Mute System Switcher
+    muteBtn.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      if (audio.muted) {
+        previousVolume = audio.volume;
+        volumeSlider.value = 0;
+      } else {
+        audio.volume = previousVolume === 0 ? 0.8 : previousVolume;
+        volumeSlider.value = audio.volume;
+      }
+      updateVolumeIcon(audio.volume, audio.muted);
+    });
+
+    // Audio Vector State Graphic Updates
+    function updateVolumeIcon(volumeValue, isMuted) {
+      if (isMuted || volumeValue === 0) {
+        volumeIcon.setAttribute('data-lucide', 'volume-x');
+      } else if (volumeValue < 0.5) {
+        volumeIcon.setAttribute('data-lucide', 'volume-1');
+      } else {
+        volumeIcon.setAttribute('data-lucide', 'volume-2');
+      }
+      lucide.createIcons();
+    }
+
+    // Track Autoplay Next/Reset Cleanup
+    audio.addEventListener('ended', () => {
+      audio.currentTime = 0;
+      updateUIState(false);
+      progressBar.value = 0;
+      currentTimeLabel.textContent = "0:00";
+    });
+
+    // Register Controls Initialization Bindings
+    playPauseBtn.addEventListener('click', togglePlay);
+
+    // Initial Bootstrap Execution Mapping Run
+    lucide.createIcons();
+    if (audio.readyState >= 1) {
+      durationTimeLabel.textContent = formatTime(audio.duration);
+    }
+  </script>
+</body>
+</html>
